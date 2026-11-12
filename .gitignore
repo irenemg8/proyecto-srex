@@ -1,0 +1,17 @@
+# Unity-generated and local-only files
+Proyecto/[Ll]ibrary/
+Proyecto/[Tt]emp/
+Proyecto/[Oo]bj/
+Proyecto/[Bb]uild/
+Proyecto/[Bb]uilds/
+Proyecto/[Ll]ogs/
+Proyecto/[Uu]ser[Ss]ettings/
+Proyecto/*.csproj
+Proyecto/*.sln
+Proyecto/*.slnx
+
+# IDE and operating-system files
+.vs/
+.idea/
+.DS_Store
+Thumbs.db
