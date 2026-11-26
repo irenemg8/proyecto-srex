@@ -1,1 +1,20 @@
 https://assetstore.unity.com/packages/3d/props/interior/dollhouse-free-modular-low-poly-interiors-furniture-room-kit-411314
+
+https://pixabay.com/sound-effects/film-special-effects-wet-squelch-425547/
+
+
+https://sketchfab.com/3d-models/frying-pan-lowpoly-89432a8085ff409bb6b00b6db4e20a29
+https://skfb.ly/pG77z
+
+https://assetstore.unity.com/packages/3d/props/stylized-fruit-props-free-391728
+
+Sound Effect by <a href="https://pixabay.com/es/users/stevebfx-56999827/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=579801">Steven Blasini</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=579801">Pixabay</a>
+
+https://pixabay.com/es/sound-effects/familiar-the-wc-sound-66433/
+
+Metadatos consultados el 18/11/2026 para la memoria:
+- Sartén: "Frying pan lowpoly", rombikgen, Sketchfab, CC BY 4.0.
+- Pixabay 425547: "Wet Squelch", Wolff-SFX, Pixabay Content License.
+- Pixabay 579801: "Room Tone 1", stevebfx (Steven Blasini), Pixabay Content License.
+- Pixabay 66433: "The WC sound", Romano.Tercero (Freesound), publicado en Pixabay, Pixabay Content License.
+Pendiente: verificar qué archivo local corresponde a cada clip de Pixabay.

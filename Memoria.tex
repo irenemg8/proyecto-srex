@@ -1,0 +1,633 @@
+\documentclass[11pt,a4paper]{article}
+
+% Compatible con pdfLaTeX, motor predeterminado de Overleaf.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tocloft}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{fancyhdr}
+
+\geometry{margin=2.4cm,headheight=14pt}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.2em,topsep=0.3em}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=0.25em,topsep=0.3em}
+\renewcommand{\arraystretch}{1.2}
+\setlength{\cftsecnumwidth}{3.0em}
+\setlength{\cftsubsecnumwidth}{3.8em}
+\urlstyle{same}
+\Urlmuskip=0mu plus 2mu\relax
+
+\definecolor{azul}{HTML}{244A63}
+\definecolor{gris}{HTML}{F1F3F4}
+\definecolor{gristexto}{HTML}{4C5661}
+\definecolor{verde}{HTML}{2D6657}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=azul,
+  urlcolor=verde,
+  citecolor=azul,
+  pdftitle={Fruta a la sartén: Memoria del proyecto final de SREX},
+  pdfauthor={Irene Medina García y Vicente Rivas Monferrer}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Fruta a la sartén}
+\rhead{\small Memoria del proyecto}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstdefinestyle{csharp}{
+  language={[Sharp]C},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{azul}\bfseries,
+  commentstyle=\color{gristexto}\itshape,
+  stringstyle=\color{verde},
+  numbers=left,
+  numberstyle=\tiny\color{gristexto},
+  numbersep=8pt,
+  stepnumber=1,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  keepspaces=true,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{gristexto},
+  backgroundcolor=\color{gris},
+  literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
+    {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+}
+
+% Si existe la captura en la ruta indicada, se incluye automáticamente.
+% Si no existe, el recuadro pendiente mantiene compilable el documento.
+\newcommand{\captura}[3]{%
+  \begin{figure}[H]
+    \centering
+    \IfFileExists{figuras/#1}{%
+      \includegraphics[width=0.96\linewidth,height=0.48\textheight,keepaspectratio]
+        {figuras/#1}%
+    }{%
+      \fcolorbox{azul}{gris}{%
+        \parbox[c][4.1cm][c]{0.88\linewidth}{%
+          \centering
+          {\Large\textbf{CAPTURA PENDIENTE}}\\[0.6em]
+          #3\\[0.8em]
+          {\small Guardar como \path{figuras/#1}}%
+        }%
+      }%
+    }%
+    \caption{#2}
+    \label{fig:#1}
+  \end{figure}
+}
+
+\newcommand{\incluirscript}[3]{%
+  \IfFileExists{Proyecto/Proyecto/Assets/_Proyecto/Scripts/#1}{%
+    \lstinputlisting[style=csharp,caption={#2},label={#3}]
+      {Proyecto/Proyecto/Assets/_Proyecto/Scripts/#1}%
+  }{%
+    \IfFileExists{Assets/_Proyecto/Scripts/#1}{%
+      \lstinputlisting[style=csharp,caption={#2},label={#3}]
+        {Assets/_Proyecto/Scripts/#1}%
+    }{%
+      \IfFileExists{scripts/#1}{%
+        \lstinputlisting[style=csharp,caption={#2},label={#3}]
+          {scripts/#1}%
+      }{%
+        \fcolorbox{azul}{gris}{\parbox{0.9\linewidth}{%
+          \textbf{Código pendiente de adjuntar:} subir el archivo
+          \texttt{#1} para que aparezca en este apéndice.}}%
+      }%
+    }%
+  }%
+}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+  {\Large Sistemas de Realidad Extendida\par}
+  \vspace{2cm}
+  {\Huge\bfseries FRUTA A LA SARTÉN\par}
+  \vspace{0.7cm}
+  {\LARGE Memoria del proyecto final\par}
+  \vfill
+  {\Large Irene Medina García\\[0.3em]Vicente Rivas Monferrer\par}
+  \vspace{1cm}
+  {\large \today\par}
+  \vfill
+  \begin{minipage}{0.9\textwidth}
+    \small
+    Los datos en \textbf{negrita} señalan aspectos por completar, comprobar o
+    documentar. La memoria distingue la configuración guardada en los archivos
+    del proyecto de las pruebas realizadas en Meta XR Simulator y de las
+    limitaciones que siguen pendientes.
+  \end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{arabic}
+
+\tableofcontents
+\newpage
+
+\section{Descripción del proyecto}
+
+\subsection{Temática y objetivo}
+
+El proyecto propone una experiencia breve de realidad virtual ambientada en una
+vivienda. El usuario recorre la casa, recoge piezas de fruta y las lleva a una
+sartén para completar una receta. La cocina es el espacio principal de
+interacción, mientras que las demás habitaciones forman parte del entorno
+explorable.
+
+El objetivo es integrar en una misma experiencia la configuración XR, la
+interacción, la locomoción, el sonido espacial y una interfaz espacial. La
+aplicación se plantea como realidad virtual para Meta Quest; no se ha planteado
+como experiencia de realidad mixta.
+
+\subsection{Experiencia prevista}
+
+El usuario puede desplazarse por la casa, elegir un modo de locomoción, agarrar
+fruta y depositarla en la zona receptora de la sartén. El marcador de la
+interfaz muestra el progreso de la receta: dos plátanos, dos naranjas y una
+piña. Se incluyen sonidos ambientales y efectos asociados a elementos y
+acciones de la escena.
+
+\textbf{Alcance de lo verificado.} La escena activa es
+\path{Assets/_Proyecto/Scenes/Casa.unity}. Unity 6 importó la escena y el
+\texttt{AudioMixer.mixer} en una ejecución batch que terminó correctamente. Esto
+confirma la lectura de los assets, pero no el funcionamiento en tiempo de
+ejecución. El intento actual de iniciar Meta XR Simulator se bloquea al crear el
+swapchain (\texttt{XR\_ERROR\_RUNTIME\_FAILURE}, sin tipos de memoria
+compatibles), por lo que no se afirma aquí una validación de la versión actual
+en el simulador. Los scripts implementan el recuento de fruta y la detección de
+la entrega en la sartén. Siguen pendientes las capturas y la prueba de ejecución
+que pueda realizarse cuando el simulador arranque.
+
+\section{Configuración del entorno}
+
+\subsection{Proyecto y escena}
+
+El proyecto utiliza Unity 6.0.83f1, Meta XR All-in-One SDK 209.0.0, Meta
+OpenXR 2.7.0, URP 17.0.4 y AI Navigation 2.0.14. La escena principal de trabajo
+es \path{Casa.unity}. El entorno se basa en el recurso de interiores low-poly
+indicado en la sección de recursos externos.
+
+La escena contiene elementos del ecosistema Meta XR para la cámara y la
+interacción. El Camera Rig serializa el origen de seguimiento \texttt{Floor
+Level}. La posición inicial y los ajustes XR se pueden inspeccionar en los
+assets. La importación batch no valida su comportamiento durante la ejecución;
+la comprobación actual en Meta XR Simulator sigue bloqueada por el error de
+swapchain descrito anteriormente. No se presenta como una prueba en un visor
+físico.
+
+\captura{configuracion_xr.png}
+  {Escena Casa y configuración del proyecto XR}
+  {Capturar la escena y el Inspector del Camera Rig con el origen Floor Level.
+  La imagen documenta la configuración serializada; no sustituye la prueba de
+  ejecución pendiente.}
+
+\subsection{Colliders de las paredes: resolución del vano}
+
+Durante la preparación del escenario apareció un problema de colisión: aunque
+una pared tenía un vano visible, el collider impedía que el usuario pasara por
+él. Un collider simplificado que cubría la pared completa trataba como sólido
+también el espacio vacío de la abertura.
+
+La solución adoptada fue ajustar la colisión por elementos de la instancia de
+la casa, añadiendo colliders a las partes sólidas de la pared y dejando libre el
+volumen del vano. Así, la geometría de colisión representa los tramos que
+realmente bloquean el paso, en vez de cerrar la abertura con una única caja. La
+escena serializada contiene numerosos \texttt{BoxCollider} añadidos a elementos
+del FBX; la importación del modelo no genera colliders automáticamente.
+
+La escena serializa colliders en los tramos sólidos de la pared y deja sin
+collider el volumen del vano, según la configuración de los objetos. La prueba
+de atravesar la abertura y chocar con los tramos sólidos queda pendiente de
+poder iniciar el simulador con la configuración actual.
+
+\captura{colliders_paredes.png}
+  {Colliders de pared y vano}
+  {Mostrar el vano con los colliders visibles en el Editor: el hueco debe quedar
+  libre y las partes sólidas deben conservar su colisión.}
+
+\subsection{Superficies de suelo y teletransporte}
+
+El suelo original estaba compuesto por muchos planos de \(1\times1\). Para
+simplificar la definición de las superficies de destino del teletransporte, se
+sustituyeron por cinco planos propios distribuidos por estancia:
+
+\begin{itemize}
+  \item \texttt{Suelo\_Cocina}
+  \item \texttt{Suelo\_Dormitorio}
+  \item \texttt{Suelo\_Salon}
+  \item \texttt{Suelo\_Pasillo}
+  \item \texttt{Suelo\_Aseo}
+\end{itemize}
+
+En la escena, estos objetos cuentan con \texttt{MeshFilter},
+\texttt{NavMeshSurface} y \texttt{BoxCollider}. La división por habitaciones
+simplifica la definición de las áreas de suelo y reduce la fragmentación
+respecto al mosaico inicial. No se han registrado mediciones de rendimiento,
+por lo que no se atribuye una mejora cuantitativa. La distribución está
+serializada en la escena; su uso y accesibilidad deben confirmarse en ejecución.
+
+\captura{suelos_teletransporte.png}
+  {Los cinco planos de suelo}
+  {Mostrar sus nombres en la jerarquía y los componentes relevantes en el
+  Inspector, junto a las áreas de teletransporte.}
+
+\subsection{Organización}
+
+Los recursos propios se agrupan bajo \path{Assets/_Proyecto}, separados por
+tipo de contenido. Esta organización permite distinguir los assets de la
+experiencia de los paquetes y componentes instalados por Unity y Meta XR.
+
+\begin{verbatim}
+Assets/
+|-- _Proyecto/
+|   |-- Audio/
+|   |-- Materials/
+|   |-- Models/
+|   |   |-- DearMousey/Stylized Fruits Props/
+|   |   |-- LowPolyInteriorsFree/
+|   |   `-- sarten.fbx
+|   |-- Prefabs/Frutas/
+|   |-- Scenes/Casa.unity
+|   `-- Scripts/
+|-- CompositionLayers/
+|-- Oculus/
+|-- Plugins/
+|-- Resources/
+|-- Screenshots/
+|-- Settings/
+|-- StreamingAssets/
+|-- TextMesh Pro/
+|-- TutorialInfo/
+|-- UnityMCP/
+`-- XR/
+\end{verbatim}
+
+\begin{itemize}
+  \item \path{Audio/} contiene los clips y \path{AudioMixer.mixer}.
+  \item \path{Materials/} contiene materiales y texturas del proyecto.
+  \item \path{Models/} conserva los modelos y carpetas de procedencia.
+  \item \path{Prefabs/Frutas/} agrupa las frutas interactuables reutilizables.
+  \item \path{Scenes/} contiene la escena activa \path{Casa.unity}.
+  \item \path{Scripts/} separa la lógica C\# propia de los componentes del SDK.
+\end{itemize}
+
+En el Hierarchy, \texttt{MUNDO}, \texttt{MUSICA}, \texttt{CONTROLLERS} e
+\texttt{INTERFACES} son contenedores funcionales. Se escriben en mayúsculas
+como convención visual para que los roots se distingan de los objetos de
+contenido; las mayúsculas no tienen un efecto funcional en Unity. \texttt{MUNDO}
+agrupa el escenario; \texttt{MUSICA}, el ambiente; \texttt{CONTROLLERS}, los
+controladores de la aplicación; e \texttt{INTERFACES}, los paneles y elementos
+de UI.
+
+El Camera Rig y los Building Blocks de teletransporte y audio aprovechan
+configuraciones reutilizables del SDK en vez de reconstruir manualmente cada
+subsistema. \texttt{SartenController} permanece en \texttt{SartenSensor}, junto
+al collider trigger, porque \texttt{OnTriggerEnter} debe recibir la entrada en
+el objeto asociado al collider. No se agrupa bajo \texttt{CONTROLLERS} por esa
+dependencia física.
+
+\textbf{La escena conserva también \texttt{SUELO\_NAV}, que en los archivos
+revisados solo presenta Transform y no una referencia funcional identificada;
+no se le atribuye una función operativa.}
+
+\captura{jerarquia_proyecto.png}
+  {Jerarquía de Casa y carpetas principales}
+  {Capturar el Hierarchy mostrando los roots funcionales, Camera Rig, sensores,
+  Building Blocks y los suelos; acompañar con el árbol de carpetas del proyecto.}
+
+\section{Interacción}
+
+\subsection{Recogida y entrega de fruta}
+
+La interacción se apoya en elementos del Meta Interaction SDK y en prefabs de
+fruta. La lógica de entrega está implementada en \texttt{SartenController.cs},
+que se encuentra en el objeto \texttt{SartenSensor}, asociado al collider
+trigger de la sartén.
+
+Cuando una fruta entra en el trigger, el script comprueba su etiqueta
+(\texttt{Platano}, \texttt{Naranja} o \texttt{Pina}) y solicita registrar el
+ingrediente en \texttt{FruitProgressController.cs}. Si todavía falta esa fruta
+para completar la receta, se actualiza el marcador, se reproduce el efecto de
+fritura y se destruye el objeto entregado. Un conjunto de identificadores evita
+procesar dos veces la misma fruta.
+
+Las cantidades objetivo configuradas en el script son dos plátanos, dos
+naranjas y una piña. El progreso se presenta mediante contadores e iconos de
+estado en la interfaz.
+
+\captura{interaccion_fruta.png}
+  {Recogida y entrega de fruta}
+  {Capturar al usuario recogiendo una fruta y depositándola en la sartén durante
+  la ejecución, con el marcador visible.}
+
+\subsection{Interacción cercana y a distancia}
+
+La fruta constituye la interacción cercana de la experiencia. Los prefabs
+incluyen componentes del Interaction SDK para agarre de mano y una rutina de
+instalación de agarre a distancia. La interfaz ofrece interacción a distancia
+mediante los componentes de Canvas y el rayo del usuario; el poke proporciona
+una modalidad cercana para los controles.
+
+Los prefabs y componentes de interacción están serializados en la escena y en
+los prefabs de fruta. La recogida, la entrega y la interacción por rayo o manos
+deben volver a confirmarse en ejecución; el intento actual de iniciar el
+simulador no llega a esa fase. La captura pendiente servirá como evidencia cuando
+se pueda realizar la prueba.
+
+\captura{rayo_poke.png}
+  {Interacción del usuario con la fruta y la interfaz}
+  {Aportar evidencia del agarre y de la selección de un control con el rayo; si
+  se usa poke, mostrar también esa interacción cercana.}
+
+\subsection{Estado de la función temática}
+
+El control de la interfaz asociado al marcador no reinicia actualmente la
+receta. En \texttt{ProgressRefreshButton.cs}, la acción llama a
+\texttt{RefreshProgressUI()}, que vuelve a dibujar el estado existente, pero no
+pone a cero los contadores ni repone las frutas. Por tanto, no debe describirse
+como un botón de reinicio funcional hasta que se implemente y se pruebe esa
+lógica.
+
+\captura{trigger_sarten.png}
+  {Trigger de la sartén y controlador de entrega}
+  {Mostrar el collider trigger y el componente \texttt{SartenController} en el
+  Inspector, junto al sensor de la sartén.}
+
+\section{Locomoción}
+
+\subsection{Modos de desplazamiento}
+
+El script \texttt{LocomotionModeController.cs} conecta el desplegable de la
+interfaz con \texttt{MovingSetting} del Meta Interaction SDK. Permite habilitar
+desplazamiento continuo (\textit{Slide}), teletransporte, ambos modos o
+ninguno, y asigna el estilo correspondiente cuando se selecciona uno de los dos
+modos individuales.
+
+Para activar o desactivar los objetos asociados a cada modo, el script consulta
+mediante reflexión campos internos del SDK. Depende de nombres internos de sus
+componentes, por lo que habría que revisarla si se actualiza el SDK. La
+alternancia en ejecución queda pendiente de confirmación con la versión concreta
+del paquete cuando el simulador pueda arrancar.
+
+\subsection{Teletransporte y confort}
+
+La escena contiene tres bloques \texttt{Teleport Interactable} y un objeto
+llamado explícitamente \texttt{Teleport Hotspot}. Esto no basta para demostrar
+por sí solo cómo se distribuyen las zonas de destino. La cantidad, ubicación y
+accesibilidad deben comprobarse durante la ejecución.
+
+En la instancia del Meta XR Rig se serializa el nivel de confort
+\texttt{High} (\path{_comfortLevel = 3}). Su efecto debe confirmarse durante la
+ejecución. No se afirma que el giro brusco (\textit{Snap Turn}) esté configurado,
+al no aparecer en los archivos revisados.
+
+\captura{locomocion.png}
+  {Selector de locomoción}
+  {Capturar el desplegable mostrando Slide, teletransporte, ambos y ninguno, y
+  evidenciar los modos durante la ejecución.}
+
+\captura{teletransporte_confort.png}
+  {Áreas de teletransporte y ajuste de confort}
+  {Mostrar la distribución real de los destinos en la casa y el ajuste High del
+  rig; añadir una prueba de desplazamiento.}
+
+\section{Sonido 3D}
+
+\subsection{Fuentes presentes}
+
+La escena incluye una fuente ambiental en bucle y emisores asociados a
+habitaciones y objetos, entre ellos \texttt{SONIDO\_WC},
+\texttt{SONIDO\_SARTEN} y \texttt{SONIDO\_FREIR}. El script
+\texttt{SartenController.cs} reproduce el clip de fritura cuando se registra
+correctamente una fruta. El volumen ambiental se controla mediante
+\texttt{AmbientVolumeController.cs}; los efectos espaciales, mediante
+\texttt{SpatialEffectsController.cs}.
+
+La escena serializa tres Building Blocks de Spatial Audio y las fuentes
+espaciales incorporan componentes Meta XR Audio con espacialización y acústica
+habilitadas. Esto describe la configuración de los assets, no una prueba auditiva
+actual; los valores acústicos de sala se presentan como aproximaciones, no como
+mediciones.
+
+La escena también contiene configuración acústica de sala mediante el modelo
+\textit{Shoebox}, con dimensiones aproximadas de \(13\times4\times14\) m y
+\texttt{clutterFactor = 0.5}. Son valores de aproximación al escenario; no se
+dispone de una validación acústica medida. La opción serializada de difracción
+no demuestra por sí sola difracción geométrica activa.
+
+\captura{audio_fuentes.png}
+  {Fuentes ambientales y espacializadas}
+  {Mostrar la posición de los emisores y los ajustes de atenuación en el
+  Inspector; incluir una evidencia auditiva o de prueba en ejecución.}
+
+\subsection{Audio Mixer y enrutamiento}
+
+\path{AudioMixer.mixer} contiene los grupos \texttt{Master}, \texttt{Ambiente} y
+\texttt{Efectos}, con un snapshot inicial a \(0\) dB para los tres. En
+\path{Casa.unity}, la fuente ambiental está enrutada a \texttt{Ambiente} y los
+tres emisores de Spatial Audio a \texttt{Efectos}. La importación batch de Unity
+terminó correctamente tras estos cambios. Falta comprobar visualmente el Mixer
+en el Editor y probar durante la ejecución que los controles de la interfaz
+afectan al audio esperado; la lectura correcta de los assets no demuestra por sí
+sola ese comportamiento.
+
+\captura{audio_mixer.png}
+  {Audio Mixer}
+  {Mostrar los grupos Master, Ambiente y Efectos, sus niveles iniciales y las
+  fuentes enrutadas a cada grupo.}
+
+\captura{acustica_sala.png}
+  {Configuración acústica y dimensiones del espacio}
+  {Mostrar el modelo Shoebox, las dimensiones 13 x 4 x 14 m y clutterFactor 0.5.}
+
+\subsection{Procedencia de los audios}
+
+En \path{usados.txt} se anotan referencias de Pixabay. Se comprobaron los títulos,
+autores y licencias indicados en sus páginas:
+
+\begin{itemize}
+  \item \textit{Wet Squelch}, autor Wolff-SFX:
+        \href{https://pixabay.com/sound-effects/film-special-effects-wet-squelch-425547/}{ficha del sonido}.
+        La página indica la Pixabay Content License.
+  \item \textit{Room Tone 1}, autor stevebfx (Steven Blasini):
+        \href{https://pixabay.com/sound-effects/film-special-effects-room-tone-1-579801/}{ficha del sonido}.
+        La página indica la Pixabay Content License.
+  \item \textit{The WC sound}, autor Romano.Tercero (Freesound), publicado en
+        Pixabay:
+        \href{https://pixabay.com/es/sound-effects/familiar-the-wc-sound-66433/}{ficha del sonido}.
+        La página indica la Pixabay Content License.
+\end{itemize}
+
+\textbf{Queda pendiente confirmar qué archivo local (\texttt{ambient.mp3},
+\texttt{freir.mp3}, \texttt{sarten.mp3} o \texttt{wc.mp3}) corresponde a cada
+referencia y qué fuente de la escena lo reproduce.} No se atribuye por nombre de
+archivo una correspondencia que no se haya verificado escuchando o revisando el
+clip.
+
+\section{Interfaces}
+
+La escena contiene una interfaz espacial con controles para el volumen ambiental,
+el modo de locomoción y los efectos espaciales. El volumen se conecta al
+slider mediante \texttt{AmbientVolumeController.cs}; la locomoción, al
+desplegable mediante \texttt{LocomotionModeController.cs}; y los efectos
+espaciales, al toggle asociado mediante \texttt{SpatialEffectsController.cs}.
+
+La interfaz incluye además un control de actualización del marcador. Tal como
+está implementado, este solo actualiza la representación del progreso: no
+reinicia la receta. Por tanto, no debe contarse como la función temática de
+reinicio solicitada hasta que se corrija.
+
+El Canvas está en modo World Space. La escena contiene componentes de
+interacción Ray y Poke para los paneles. El uso de la interfaz debe confirmarse
+en ejecución cuando el simulador pueda arrancar. La captura pendiente documenta
+el Canvas y sus componentes; la presencia de Ray/Poke no se presenta por sí sola
+como prueba del uso de prefabs concretos del Meta UI Set.
+
+\captura{interfaz_espacial.png}
+  {Canvas espacial y controles de la aplicación}
+  {Mostrar el modo World Space, la ubicación del panel, sus componentes o
+  prefabs Meta UI Set y la interacción por rayo.}
+
+\section{Recursos externos}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.20\textwidth}
+                            X}
+\toprule
+\textbf{Recurso} & \textbf{Procedencia y comprobaciones}\\
+\midrule
+Escenario e interiores & \textit{DOLLHOUSE -- FREE -- Modular Low Poly
+Interiors: Furniture \& Room Kit}, Unity Asset Store, producto 411314.
+\href{https://assetstore.unity.com/packages/3d/props/interior/dollhouse-free-modular-low-poly-interiors-furniture-room-kit-411314}{Ficha del paquete}.\\
+Frutas & \textit{Stylized Fruit Props [FREE]}, Unity Asset Store, producto
+391728. \href{https://assetstore.unity.com/packages/3d/props/stylized-fruit-props-free-391728}{Ficha del paquete}.\\
+Sartén & \textit{Frying pan lowpoly}, modelo de Sketchfab de rombikgen.
+\href{https://sketchfab.com/3d-models/frying-pan-lowpoly-89432a8085ff409bb6b00b6db4e20a29}{Ficha del modelo}.
+Licencia Creative Commons Atribución 4.0 Internacional (CC BY 4.0). La
+atribución debe conservar el título, el autor y el enlace al modelo.\\
+Efectos de sonido & Las páginas de Pixabay y sus autores/licencias se identifican
+en el apartado de sonido. Falta asociar de forma inequívoca cada enlace con cada
+archivo de audio local.\\
+\bottomrule
+\end{tabularx}
+\caption{Recursos externos utilizados y comprobaciones pendientes}
+\end{table}
+
+\section{Organización del trabajo}
+
+El reparto debe reflejar el trabajo realmente realizado por cada integrante.
+Los nombres del grupo son Irene Medina García y Vicente Rivas Monferrer; las
+tareas concretas se dejan pendientes para no atribuir responsabilidades sin
+confirmación.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.32\textwidth}X}
+\toprule
+\textbf{Integrante} & \textbf{Tareas realizadas y responsabilidad}\\
+\midrule
+Irene Medina García & \textbf{[Completar con las tareas efectivamente
+realizadas y sus evidencias.]}\\
+Vicente Rivas Monferrer & \textbf{[Completar con las tareas efectivamente
+realizadas y sus evidencias.]}\\
+\bottomrule
+\end{tabularx}
+\caption{Reparto de responsabilidades del grupo}
+\end{table}
+
+\section{Comprobaciones pendientes antes de la entrega}
+
+\begin{enumerate}
+  \item Implementar el reinicio real de la receta y, si corresponde, reponer las
+        frutas. Esto requiere modificar C\#, que no se ha cambiado en esta
+        revisión.
+  \item Confirmar en el Editor los grupos y enrutamientos del Audio Mixer, y
+        probar los controles y la atenuación en ejecución.
+  \item Resolver el bloqueo de Meta XR Simulator (\texttt{xrCreateSwapchain},
+        sin tipos de memoria compatibles) y repetir las pruebas de interacción,
+        locomoción, confort, audio e interfaz. No se han cambiado preferencias
+        de GPU ni de Windows.
+  \item Asociar cada archivo de audio con su página de procedencia y añadir la
+        atribución correspondiente en la memoria.
+  \item Completar el reparto real del trabajo y sustituir los marcadores de
+        captura por imágenes de la escena y de las pruebas.
+\end{enumerate}
+
+\section{Conclusiones}
+
+El proyecto cuenta con una escena de vivienda adaptada para la experiencia, una
+configuración de colliders, cinco planos de suelo propios, scripts para registrar
+la entrega de fruta y mostrar el progreso, y componentes de locomoción, sonido e
+interfaz. El Audio Mixer ya contiene grupos diferenciados y las fuentes de la
+escena están enrutadas a ellos. La importación batch de Unity terminó
+correctamente, pero no equivale a una prueba de ejecución.
+
+En la revisión actual, el inicio de Meta XR Simulator queda bloqueado antes de
+probar la experiencia por un error de asignación de memoria al crear el
+swapchain. Siguen pendientes el reinicio temático (requiere C\#), la validación
+en ejecución, la correspondencia de los audios con sus fuentes, el reparto real
+del trabajo y las capturas. No se afirma una prueba en un visor físico.
+\appendix
+\section{Código fuente de los scripts}
+
+Los listados siguientes se leen directamente desde
+\path{Assets/_Proyecto/Scripts}. De este modo, al compilar la memoria se incluye
+el código presente en el proyecto y se evita mantener una copia manual que
+pueda quedar desactualizada. El comando busca los archivos tanto en la carpeta
+del proyecto Unity como en \path{scripts/}; si se compila en Overleaf sin esos
+archivos, aparecerá un aviso en su lugar.
+
+\subsection{\texttt{AmbientVolumeController.cs}}
+\incluirscript{AmbientVolumeController.cs}{Control del volumen ambiental}{lst:ambient}
+
+\subsection{\texttt{ExitDialogController.cs}}
+\incluirscript{ExitDialogController.cs}{Diálogo de salida y estado de la tarea}{lst:exit}
+
+\subsection{\texttt{FruitProgressController.cs}}
+\incluirscript{FruitProgressController.cs}{Registro y presentación del progreso de fruta}{lst:progress}
+
+\subsection{\texttt{HelpDialogController.cs}}
+\incluirscript{HelpDialogController.cs}{Visibilidad del panel de ayuda}{lst:help}
+
+\subsection{\texttt{LocomotionModeController.cs}}
+\incluirscript{LocomotionModeController.cs}{Selección del modo de locomoción}{lst:locomotion}
+
+\subsection{\texttt{ProgressRefreshButton.cs}}
+\incluirscript{ProgressRefreshButton.cs}{Actualización visual del progreso}{lst:refresh}
+
+\subsection{\texttt{SartenController.cs}}
+\incluirscript{SartenController.cs}{Detección de fruta en el sensor de la sartén}{lst:pan}
+
+\subsection{\texttt{SpatialEffectsController.cs}}
+\incluirscript{SpatialEffectsController.cs}{Silenciado y activación de efectos espaciales}{lst:spatial}
+
+\end{document}

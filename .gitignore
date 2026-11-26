@@ -10,6 +10,33 @@ Proyecto/*.csproj
 Proyecto/*.sln
 Proyecto/*.slnx
 
+# The Unity project now lives one folder deeper
+Proyecto/Proyecto/[Ll]ibrary/
+Proyecto/Proyecto/[Tt]emp/
+Proyecto/Proyecto/[Oo]bj/
+Proyecto/Proyecto/[Bb]uild/
+Proyecto/Proyecto/[Bb]uilds/
+Proyecto/Proyecto/[Ll]ogs/
+Proyecto/Proyecto/[Uu]ser[Ss]ettings/
+Proyecto/Proyecto/*.csproj
+Proyecto/Proyecto/*.sln
+Proyecto/Proyecto/*.slnx
+Proyecto/Proyecto/Memoria.aux
+Proyecto/Proyecto/Memoria.log
+Proyecto/Proyecto/Memoria.out
+Proyecto/Proyecto/Memoria.toc
+Proyecto/Proyecto/Memoria.pdf
+
+# Local archives and LaTeX build output
+Proyecto_entrega.zip
+Proyecto/Proyecto/Packages.zip
+Proyecto/Proyecto/TempAssembly.dll
+Memoria.aux
+Memoria.log
+Memoria.out
+Memoria.toc
+Memoria.pdf
+
 # IDE and operating-system files
 .vs/
 .idea/
